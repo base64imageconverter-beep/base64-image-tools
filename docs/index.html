@@ -1,13 +1,706 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="google-site-verification" content="Apib7-x98H0j5cPqHWwSMm6dNU4GmODRoqxLiDzdx9I" />
-  <title>Base64 Image Tools</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free Base64 to Image converter tool. Convert Base64 encoded strings to PNG, JPG, GIF, WebP images instantly. Fast, secure, and works offline in your browser.">
+    <title>Base64 to Image Converter - Free Online Decoder Tool</title>
+    <meta name="google-site-verification" content="TQ78oI-cL96EvjAEqeTtJIYPAABEl2-QHQVrgBCGveI" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .tool-section {
+            padding: 40px 30px;
+        }
+
+        .converter-box {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #495057;
+            font-size: 1.1em;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .result-section {
+            margin-top: 30px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            display: none;
+        }
+
+        .result-section.active {
+            display: block;
+        }
+
+        .image-preview {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .image-info {
+            margin-top: 20px;
+            padding: 20px;
+            background: #e7f3ff;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #cfe2ff;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .info-value {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .content-section {
+            padding: 50px 30px;
+            background: #f8f9fa;
+        }
+
+        .content-section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .content-section h3 {
+            color: #495057;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .content-section p {
+            margin-bottom: 15px;
+            font-size: 1.05em;
+            color: #495057;
+            text-align: justify;
+        }
+
+        .content-section ul, .content-section ol {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        .content-section li {
+            margin-bottom: 10px;
+            font-size: 1.05em;
+            color: #495057;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+
+        .feature-card h4 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 1em;
+            text-align: left;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        footer {
+            background: #2d3436;
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .tool-section, .content-section {
+                padding: 30px 20px;
+            }
+
+            .converter-box {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            header {
+                padding: 30px 20px;
+            }
+
+            .content-section h2 {
+                font-size: 1.5em;
+            }
+
+            .content-section h3 {
+                font-size: 1.2em;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Base64 Image Tools</h1>
-  <p>Google Search Console verification page.</p>
-  <p><a href="https://github.com/base64imageconverter-beep/base64-image-tools">GitHub Repo</a></p>
-</body>
-</html>
+    <div class="container">
+        <header>
+            <h1>🖼️ Base64 to Image Converter</h1>
+            <p class="subtitle">Convert Base64 encoded strings to images instantly - Free, Fast & Secure</p>
+        </header>
+
+        <div class="tool-section">
+            <div class="converter-box">
+                <label for="base64Input">Paste Your Base64 String Here:</label>
+                <textarea id="base64Input" placeholder="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA... or just paste the Base64 string"></textarea>
+                
+                <div class="button-group">
+                    <button class="btn-primary" onclick="convertBase64()">Convert to Image</button>
+                    <button class="btn-secondary" onclick="clearAll()">Clear All</button>
+                    <button class="btn-success" onclick="downloadImage()" id="downloadBtn" style="display:none;">Download Image</button>
+                </div>
+
+                <div id="alert"></div>
+            </div>
+
+            <div class="result-section" id="resultSection">
+                <h3 style="color: #667eea; margin-bottom: 20px;">Converted Image:</h3>
+                <div class="image-preview">
+                    <img id="outputImage" alt="Converted Image">
+                </div>
+                
+                <div class="image-info" id="imageInfo"></div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>What is Base64 to Image Conversion?</h2>
+            <p>Base64 to Image conversion is the process of decoding Base64 encoded strings back into their original image format. Base64 encoding is a method of converting binary image data into ASCII text format, making it easier to transmit images over text-based protocols like JSON, XML, or HTML. Our Base64 to Image converter tool allows you to quickly decode these encoded strings and view or download the original images in formats like PNG, JPG, GIF, WebP, and more.</p>
+
+            <p>When developers and designers work with web applications, they often encounter Base64 encoded images embedded directly in HTML, CSS, or JavaScript files. This encoding method is particularly useful for small images, icons, or when you need to reduce HTTP requests. However, viewing or editing these images requires converting them back to their original format, which is where our Base64 to Image tool becomes invaluable.</p>
+
+            <h2>Why Use Our Base64 to Image Converter?</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🚀 Lightning Fast</h4>
+                    <p>Convert Base64 strings to images instantly without any server delays. All processing happens in your browser.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔒 100% Secure</h4>
+                    <p>Your images never leave your device. All conversions are performed locally in your browser for maximum privacy.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📱 Mobile Friendly</h4>
+                    <p>Works perfectly on all devices - smartphones, tablets, and desktops with responsive design.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💰 Completely Free</h4>
+                    <p>No registration, no hidden fees, no limitations. Convert unlimited Base64 strings to images.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🌐 Works Offline</h4>
+                    <p>Once loaded, the tool works completely offline without requiring an internet connection.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎨 All Formats</h4>
+                    <p>Supports PNG, JPG, JPEG, GIF, WebP, BMP, SVG, and all other web-compatible image formats.</p>
+                </div>
+            </div>
+
+            <h2>How to Use the Base64 to Image Converter</h2>
+            <p>Converting Base64 encoded strings to images is incredibly simple with our tool. Follow these straightforward steps:</p>
+            
+            <ol>
+                <li><strong>Copy Your Base64 String:</strong> Locate the Base64 encoded image string from your source code, API response, or database. It typically starts with "data:image/png;base64," or similar prefix.</li>
+                <li><strong>Paste Into the Converter:</strong> Paste the entire Base64 string into the text area above. You can paste with or without the data URI prefix - our tool handles both formats automatically.</li>
+                <li><strong>Click Convert:</strong> Press the "Convert to Image" button and watch as your encoded string transforms into a visible image instantly.</li>
+                <li><strong>View and Download:</strong> Once converted, you can view the image directly in your browser and download it to your device in its original format with a single click.</li>
+            </ol>
+
+            <h2>Understanding Base64 Encoding for Images</h2>
+            <p>Base64 encoding is a binary-to-text encoding scheme that represents binary data in an ASCII string format. When applied to images, it converts the binary image data into a text string composed of 64 different ASCII characters (A-Z, a-z, 0-9, +, and /). This encoding increases the data size by approximately 33%, but it provides significant advantages in certain scenarios.</p>
+
+            <p>The Base64 encoded image string typically begins with a data URI scheme like "data:image/png;base64," followed by the encoded data. This prefix indicates the MIME type of the image (PNG, JPEG, GIF, etc.) and specifies that the following string is Base64 encoded. Understanding this structure helps developers work more effectively with encoded images in web development.</p>
+
+            <h3>Common Use Cases for Base64 Encoded Images</h3>
+            <ul>
+                <li><strong>Embedding Images in HTML/CSS:</strong> Base64 encoding allows developers to embed small images directly into HTML or CSS files, eliminating additional HTTP requests and potentially improving page load times for small assets like icons or logos.</li>
+                <li><strong>JSON and XML Data Transfer:</strong> When transmitting images through APIs that use JSON or XML formats, Base64 encoding converts binary image data into text format that these protocols can handle seamlessly.</li>
+                <li><strong>Email Template Development:</strong> Email clients often have issues loading external images. Base64 encoded images embedded directly in HTML email templates ensure images display reliably across different email clients.</li>
+                <li><strong>Canvas and Image Processing:</strong> JavaScript's Canvas API frequently outputs images as Base64 strings, which developers need to convert back to viewable image formats.</li>
+                <li><strong>Database Storage:</strong> Some applications store small images as Base64 strings in databases, particularly when dealing with text-based database systems or when simplifying data structure.</li>
+                <li><strong>Cross-Platform Data Exchange:</strong> Base64 encoding ensures image data can be safely transmitted across different systems, platforms, and programming languages without corruption.</li>
+            </ul>
+
+            <h2>Technical Details of Base64 Image Conversion</h2>
+            <p>The Base64 to Image conversion process involves several technical steps that happen automatically when you use our tool. First, the converter validates the input string to ensure it's properly formatted Base64 data. It then decodes the Base64 string back into binary data, reconstructing the original image file byte by byte.</p>
+
+            <p>Our converter automatically detects the image format from the data URI prefix or the binary data signature. It then creates an image object in the browser's memory and renders it for display. The entire process happens client-side using JavaScript, which means your images remain private and the conversion is instantaneous regardless of file size.</p>
+
+            <h3>Supported Image Formats</h3>
+            <p>Our Base64 to Image converter supports all standard web image formats:</p>
+            <ul>
+                <li><strong>PNG (Portable Network Graphics):</strong> Lossless compression format ideal for graphics, logos, and images requiring transparency. PNG images maintain full quality and support alpha channel transparency.</li>
+                <li><strong>JPEG/JPG (Joint Photographic Experts Group):</strong> Lossy compression format perfect for photographs and complex images with many colors. JPEG offers excellent compression ratios for photographic content.</li>
+                <li><strong>GIF (Graphics Interchange Format):</strong> Supports animation and transparency, commonly used for simple animations and images with limited color palettes.</li>
+                <li><strong>WebP:</strong> Modern image format developed by Google offering superior compression and quality characteristics compared to PNG and JPEG. Supports both lossy and lossless compression.</li>
+                <li><strong>BMP (Bitmap):</strong> Uncompressed raster image format that maintains full image quality but results in larger file sizes.</li>
+                <li><strong>SVG (Scalable Vector Graphics):</strong> XML-based vector image format that remains crisp at any resolution, perfect for logos, icons, and illustrations.</li>
+                <li><strong>ICO (Icon):</strong> Windows icon format supporting multiple image sizes within a single file, commonly used for favicons and application icons.</li>
+            </ul>
+
+            <h2>Advantages of Using Base64 Image Encoding</h2>
+            <p>While Base64 encoding increases file size, it offers several compelling advantages in specific scenarios:</p>
+
+            <h3>Reduced HTTP Requests</h3>
+            <p>By embedding small images directly into HTML or CSS as Base64 strings, you eliminate separate HTTP requests for those images. This reduction in requests can significantly improve page load times, especially for pages with many small icons or graphics. However, this benefit primarily applies to small images, as large Base64 encoded images can increase HTML/CSS file sizes substantially.</p>
+
+            <h3>Simplified Data Management</h3>
+            <p>Base64 encoding simplifies managing images in text-based systems. When working with JSON APIs, configuration files, or text-based databases, Base64 allows images to be treated as strings alongside other text data. This uniformity simplifies data structures and reduces complexity in data handling logic.</p>
+
+            <h3>Cross-Platform Compatibility</h3>
+            <p>Base64 encoded images can be safely transmitted across different platforms, programming languages, and systems without worrying about binary data corruption or incompatibility. The ASCII text format ensures consistent handling regardless of the underlying system architecture.</p>
+
+            <h3>Caching Benefits</h3>
+            <p>When images are embedded as Base64 in CSS files, they get cached along with the stylesheet. This means the images are automatically cached when the CSS file is cached, potentially reducing server requests on subsequent page visits.</p>
+
+            <h2>When to Avoid Base64 Image Encoding</h2>
+            <p>Despite its advantages, Base64 encoding isn't always the best choice for images:</p>
+
+            <h3>Large Images</h3>
+            <p>Base64 encoding increases file size by approximately 33%. For large images, this overhead negates any benefits from reduced HTTP requests. Large encoded images also prevent progressive loading and increase initial page load times significantly.</p>
+
+            <h3>Browser Caching Limitations</h3>
+            <p>Images encoded in HTML documents can't be cached separately from the page. If you update the image, users must re-download the entire HTML file. Separate image files allow browsers to cache images independently and only re-download changed resources.</p>
+
+            <h3>SEO Considerations</h3>
+            <p>Search engine crawlers may have difficulty indexing Base64 encoded images for image search results. Traditional image files with proper alt text and file names provide better SEO value and accessibility for image-based search traffic.</p>
+
+            <h3>Accessibility Concerns</h3>
+            <p>Screen readers and assistive technologies may have varying levels of support for Base64 encoded images. Using standard image tags with proper alt text ensures better accessibility for users with disabilities.</p>
+
+            <h2>Best Practices for Base64 Image Usage</h2>
+            <p>To maximize the benefits of Base64 encoding while minimizing drawbacks, follow these best practices:</p>
+
+            <ul>
+                <li><strong>Size Threshold:</strong> Only encode images smaller than 10KB. Larger images should use traditional file references for better performance and caching behavior.</li>
+                <li><strong>Critical Resources:</strong> Encode only above-the-fold or critical images needed for initial page render. This reduces initial HTTP requests for important visual elements.</li>
+                <li><strong>Format Selection:</strong> Choose appropriate image formats before encoding. Use PNG for graphics requiring transparency, JPEG for photographs, and SVG for vector graphics when possible.</li>
+                <li><strong>Compression First:</strong> Always optimize and compress images before Base64 encoding to minimize the resulting string length and overall file size impact.</li>
+                <li><strong>Testing:</strong> Always test page load performance with and without Base64 encoding to ensure it provides actual benefits in your specific use case.</li>
+                <li><strong>Documentation:</strong> Document your use of Base64 encoded images in your codebase so other developers understand the implementation and reasoning.</li>
+            </ul>
+
+            <h2>Common Issues and Troubleshooting</h2>
+            
+            <h3>Invalid Base64 String Error</h3>
+            <p>If you receive an error about invalid Base64 data, ensure you've copied the complete string including any data URI prefix. The string should contain only valid Base64 characters (A-Z, a-z, 0-9, +, /, and =). Remove any whitespace, line breaks, or special characters that might have been introduced during copying.</p>
+
+            <h3>Image Not Displaying</h3>
+            <p>If the converter processes the string but the image doesn't display, the Base64 data might be corrupted or incomplete. Try obtaining the original encoded string again from your source. Also verify that the data URI prefix matches the actual image format in the encoded data.</p>
+
+            <h3>Download Issues</h3>
+            <p>If you can view the image but encounter problems downloading it, check your browser's download settings and permissions. Some browsers may block automatic downloads; you may need to right-click the image and select "Save Image As" manually.</p>
+
+            <h2>Alternative Methods for Base64 Conversion</h2>
+            
+            <h3>Using JavaScript</h3>
+            <div class="code-block">
+// Convert Base64 to Image using JavaScript
+const base64String = 'data:image/png;base64,iVBORw0KGgoAAAA...';
+const img = document.createElement('img');
+img.src = base64String;
+document.body.appendChild(img);
+            </div>
+
+            <h3>Using Python</h3>
+            <div class="code-block">
+# Convert Base64 to Image using Python
+import base64
+from PIL import Image
+from io import BytesIO
+
+base64_string = "iVBORw0KGgoAAAANSUhEUgAA..."
+image_data = base64.b64decode(base64_string)
+image = Image.open(BytesIO(image_data))
+image.save("output.png")
+            </div>
+
+            <h3>Using PHP</h3>
+            <div class="code-block">
+// Convert Base64 to Image using PHP
+$base64_string = "iVBORw0KGgoAAAANSUhEUgAA...";
+$image_data = base64_decode($base64_string);
+file_put_contents("output.png", $image_data);
+            </div>
+
+            <h2>Privacy and Security Considerations</h2>
+            <p>Our Base64 to Image converter prioritizes your privacy and security. All conversions happen entirely within your web browser using client-side JavaScript. Your Base64 strings and converted images never touch our servers or any external services. This approach ensures:</p>
+
+            <ul>
+                <li>Complete privacy - your images remain on your device</li>
+                <li>No data retention - nothing is stored or logged</li>
+                <li>Offline functionality - works without internet after initial page load</li>
+                <li>No tracking - we don't collect any usage data or analytics</li>
+                <li>Safe for sensitive content - perfect for confidential or proprietary images</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+            
+            <h3>Is Base64 to Image conversion free?</h3>
+            <p>Yes, our Base64 to Image converter is completely free with no limitations on usage. You can convert unlimited images without registration or payment.</p>
+
+            <h3>Do I need to install any software?</h3>
+            <p>No installation required. Our tool works directly in your web browser on any device. Simply open the page and start converting immediately.</p>
+
+            <h3>What is the maximum image size I can convert?</h3>
+            <p>There's no strict limit imposed by our tool, but extremely large Base64 strings may cause performance issues in your browser. For best results, we recommend Base64 strings representing images under 5MB.</p>
+
+            <h3>Can I convert multiple images at once?</h3>
+            <p>Currently, our tool processes one Base64 string at a time. For multiple conversions, simply paste each string individually and convert them one after another.</p>
+
+            <h3>Does the tool work on mobile devices?</h3>
+            <p>Absolutely! Our converter is fully responsive and works seamlessly on smartphones, tablets, and all mobile devices with modern browsers.</p>
+
+            <h3>How do I get a Base64 string from an image?</h3>
+            <p>You can use our companion Image to Base64 converter tool, or use built-in methods in various programming languages. JavaScript's FileReader API, Python's base64 module, and similar libraries in other languages can encode images to Base64.</p>
+
+            <h2>Conclusion</h2>
+            <p>Base64 to Image conversion is an essential tool for modern web development, data processing, and cross-platform image handling. Whether you're debugging encoded images in your code, extracting images from API responses, or working with embedded image data, our free Base64 to Image converter provides a fast, secure, and user-friendly solution.</p>
+
+            <p>The ability to quickly decode and visualize Base64 encoded images saves developers and designers significant time and effort. With support for all common image formats, mobile-responsive design, and complete client-side processing for maximum privacy, our tool serves as the perfect solution for all your Base64 image decoding needs. Start converting your Base64 strings to images today and experience the convenience of instant, secure image conversion right in your browser.</p>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Base64 to Image Converter. All rights reserved. | Privacy-focused & Secure</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentImageData = null;
+        let currentImageFormat = 'png';
+
+        function showAlert(message, type) {
+            const alertDiv = document.getElementById('alert');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            alertDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function convertBase64() {
+            const input = document.getElementById('base64Input').value.trim();
+            
+            if (!input) {
+                showAlert('Please paste a Base64 string to convert.', 'error');
+                return;
+            }
+
+            try {
+                let base64String = input;
+                
+                // Check if it has data URI prefix
+                if (input.includes('base64,')) {
+                    base64String = input.split('base64,')[1];
+                    // Extract format from data URI
+                    const formatMatch = input.match(/data:image\/(\w+);base64,/);
+                    if (formatMatch) {
+                        currentImageFormat = formatMatch[1];
+                    }
+                }
+
+                // Validate Base64
+                const base64Regex = /^[A-Za-z0-9+/=]+$/;
+                if (!base64Regex.test(base64String.replace(/\s/g, ''))) {
+                    throw new Error('Invalid Base64 string format');
+                }
+
+                // Create image
+                const img = document.getElementById('outputImage');
+                const fullBase64 = input.includes('data:image') ? input : `data:image/${currentImageFormat};base64,${base64String}`;
+                
+                img.onload = function() {
+                    currentImageData = fullBase64;
+                    document.getElementById('resultSection').classList.add('active');
+                    document.getElementById('downloadBtn').style.display = 'inline-block';
+                    
+                    // Display image info
+                    const info = document.getElementById('imageInfo');
+                    info.innerHTML = `
+                        <div class="info-item">
+                            <span class="info-label">Width:</span>
+                            <span class="info-value">${img.naturalWidth}px</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Height:</span>
+                            <span class="info-value">${img.naturalHeight}px</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Format:</span>
+                            <span class="info-value">${currentImageFormat.toUpperCase()}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Base64 Size:</span>
+                            <span class="info-value">${(base64String.length / 1024).toFixed(2)} KB</span>
+                        </div>
+                    `;
+                    
+                    showAlert('Image converted successfully!', 'success');
+                };
+
+                img.onerror = function() {
+                    throw new Error('Failed to load image from Base64 data');
+                };
+
+                img.src = fullBase64;
+
+            } catch (error) {
+                showAlert('Error: ' + error.message + '. Please check your Base64 string.', 'error');
+                document.getElementById('resultSection').classList.remove('active');
+            }
+        }
+
+        function clearAll() {
+            document.getElementById('base64Input').value = '';
+            document.getElementById('resultSection').classList.remove('active');
+            document.getElementById('downloadBtn').style.display = 'none';
+            currentImageData = null;
+            const alertDiv = document.getElementById('alert');
+            alertDiv.style.display = 'none';
+        }
+
+        function downloadImage() {
+            if (!currentImageData) {
+                showAlert('No image to download. Please convert a Base64 string first.', 'error');
+                return;
+            }
+
+            try {
+                const link = document.createElement('a');
+                link.href = currentImageData;
+                link.download = `converted-image.${currentImageFormat}`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showAlert('Image downloaded successfully!', 'success');
+            } catch (error) {
+                showAlert('Error downloading image: ' + error.message, 'error');
+            }
+        }
+
+        // Allow Enter key in textarea without triggering conversion
+        document.getElementById('base64Input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                convertBase64();
+            }
+        });
